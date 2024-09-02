@@ -166,10 +166,10 @@ def main(args):
     )
 
     if os.path.isfile(att_emb_path):
-        print("Loading attribute text embeddings", att_emb_path)
         att_emb = pickle.load(open(att_emb_path, "rb"))
         text_features = torch.Tensor(att_emb["text_features"]).to(device)
         len_synonyms = att_emb["len_synonyms"]
+        print("Loaded attribute text embeddings from", att_emb_path, "shape", text_features.shape)
     else:
         print("Calculating attribute text embeddings")
         # unconditional embeddings
