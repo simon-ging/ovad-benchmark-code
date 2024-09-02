@@ -16,6 +16,7 @@ ovamc/open_clip
 ovamc/clip
 ovamc/X_VLM
 
+/.idea/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

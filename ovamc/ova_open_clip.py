@@ -230,7 +230,7 @@ def main(args):
             "text_features": text_features.cpu().numpy(),
         }
 
-        print("Saving attribute text embeddings", att_emb_path)
+        print("Saving attribute text embeddings", att_emb_path, "shape", text_features.shape)
         with open(att_emb_path, "wb") as t:
             pickle.dump(att_emb, t)
 
