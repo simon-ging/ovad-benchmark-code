@@ -7,16 +7,15 @@ conda activate ovad
 python -m pip install -U pip
 conda install -y pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 \
   cudatoolkit=11.3 -c pytorch -c conda-forge
-pip install pycocotools
 pip install -U -r newreq.txt
-python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
-pip install openai-clip open-clip-torch scikit-learn
+# # ignore detectron / if needed, remove clips etc. from newreq (install minimal, then detectron, then rest)
+# python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
 
 # pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
 # pip install dill GPUtil detectron2 ipdb json lvis matplotlib nltk numpy Pillow pycocotools tabulate
 
+mkdir datasets
 ln -s ~/dataset_symlinks/coco/ ~/repos/ovad-benchmark-code/datasets
-
 
 # ll ~/dataset_symlinks/coco/
 # total 0

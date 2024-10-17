@@ -23,6 +23,9 @@ def extract_bb(data, data_root, train_img_ids, val_img_ids, save_dir):
         img_id = int(bb["image_id"])
         bb_cords = bb["bbox"]
         bb_area = bb["area"]
+        # # bbox and area area pixel values. bbox is format [x, y, w, h]
+        # bb:  'area': 6089.0184, 'iscrowd': 0, 'bbox': [290.69, 218.0, 61.83, 98.48]
+        # data["images"][0] 'height': 426, 'width': 640,
         img_name = [
             item["file_name"] for item in data["images"] if item["id"] == img_id
         ]

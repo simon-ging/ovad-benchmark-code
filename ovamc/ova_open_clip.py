@@ -1,5 +1,6 @@
 import os
 import sys
+from pathlib import Path
 
 sys.path.insert(0, os.getcwd())
 import open_clip
@@ -122,12 +123,14 @@ def main(args):
     annotations = json.load(open(args.ann_file, "r"))
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    print("Loading open_clip")
+    print(f"Loading open_clip {args.model_arch} {args.pretrained}")
     model, _, eval_transform = open_clip.create_model_and_transforms(
         args.model_arch, pretrained=args.pretrained
     )
     # model, _ = open_clip.load(args.model_arch, device=device)
     model.to(device)
+    # todo remove dump state dict
+    torch.save(model.state_dict(), Path.home() / "statedict_ovad_open_clip.pth")
 
     # Make transform
     channel_stats = dict(
@@ -142,6 +145,7 @@ def main(args):
             transforms.Normalize(**channel_stats),
         ]
     )
+    print(transform)
 
     dataset = OVAD_Boxes(root=args.dir_data, transform=transform)
     data_loader = torch.utils.data.DataLoader(
@@ -268,12 +272,18 @@ def main(args):
 
             if i % 50 == 0:
                 print("Processed {} out of {}".format(i, len(data_loader)), end="\r")
-                if 0 < i < 300:
-                    GPUtil.showUtilization(all=True)
+                # if 0 < i < 300:
+                #     GPUtil.showUtilization(all=True)
 
     pred_vectors = np.concatenate(pred_vectors, axis=0)
     label_vectors = np.concatenate(label_vectors, axis=0)
     indx_max_syn = np.concatenate(indx_max_syn, axis=0)
+
+    if True:
+        np.save(Path.home() / "ovad_temp_pred_vectors.npy", pred_vectors)
+        np.save(Path.home() / "ovad_temp_label_vectors.npy", label_vectors)
+        print(F"Saved pred_vectors and label_vectors to {Path.home()}/ovad...")
+
     ovad_validate(
         annotations["attributes"],
         pred_vectors,
